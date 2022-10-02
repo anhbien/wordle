@@ -8,13 +8,19 @@ type KeyProps = {
 
 function Key(props: KeyProps){
     const {name} = props;
-    const {handleInput, handleDelete} = useContext(WordleContext);
+    const {handleInput, handleDelete, handleEnter} = useContext(WordleContext);
 
     const handleKeyClicked = (value: string)=>{
-        if(value==='DEL'){
-            handleDelete();
-        } else{
-            handleInput(value);
+        switch (value) {
+            case 'DEL':
+                handleDelete();
+                break;
+            case 'ENTER':
+                handleEnter();
+                break;
+            default:
+                handleInput(value);
+                break;
         }
     }
 

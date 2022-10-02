@@ -8,6 +8,7 @@ type IWordleContext = {
     updateRow: (row: number) => void;
     handleInput: (value: string) =>void;
     handleDelete: () => void;
+    handleEnter: () => void;
 }
 
 const WordleContext = React.createContext<IWordleContext>((null as unknown) as IWordleContext);
@@ -36,7 +37,13 @@ const WordleProvider: FC<WordleProviderProps> = ({ children }): JSX.Element =>{
         updateBoard(currentRow, currentCell, '');
         if(currentCell>0)
             setCurrentCell(currentCell-1);
-        console.log(currentCell);
+    }
+
+    const handleEnter = ()=>{
+        if(currentRow<numberOfRow-1){
+            setCurrentRow(currentRow+1);
+            setCurrentCell(0);
+        }
     }
 
     const updateBoard = (row: number, cell: number, value: string)=>{
@@ -46,7 +53,7 @@ const WordleProvider: FC<WordleProviderProps> = ({ children }): JSX.Element =>{
     }
 
     return (
-        <WordleContext.Provider value={{board, currentRow, currentCell, updateRow, handleInput, handleDelete}}>
+        <WordleContext.Provider value={{board, currentRow, currentCell, updateRow, handleInput, handleDelete, handleEnter}}>
             {children}
         </WordleContext.Provider>
         
