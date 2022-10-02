@@ -9,7 +9,7 @@ function App() {
       <div className="main">
         <div>
           <h1 className='text-center'>Wordle</h1>
-          <Wordle numberOfRow={6}/>
+          <Wordle/>
         </div>
         <Keyboard/>
       </div>

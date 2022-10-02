@@ -1,21 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Row from './Row';
 import '../App.css';
+import { WordleContext } from '../context/WordleContext';
 
-type WordleProps = {
-    numberOfRow: number;
-};
-function Wordle(props: WordleProps){
-    const {numberOfRow} = props;
-    const wordleRender = [];
-    
-    for (let index = 0; index < numberOfRow; index++) {
-        wordleRender.push(<Row numberOfSquare={5} key={`row${index}`}/>)
-    }
+function Wordle(){
+    const {board} = useContext(WordleContext);
 
     return (
         <div className='wordle'>
-            {wordleRender}
+            {board.map((row, index)=> <Row row={row} key={index}/>)}
         </div>
     );
 }

@@ -27,7 +27,7 @@
 .square.-entered{
   color: rgb(26, 26, 26);
   background-color: white;
-  border: #111111 solid 2px;
+  border: #111111 solid 1px;
 }
 
 .square.-wrong{

@@ -8,7 +8,15 @@ type KeyProps = {
 
 function Key(props: KeyProps){
     const {name} = props;
-    const {handleKeyClicked} = useContext(WordleContext);
+    const {handleInput, handleDelete} = useContext(WordleContext);
+
+    const handleKeyClicked = (value: string)=>{
+        if(value==='DEL'){
+            handleDelete();
+        } else{
+            handleInput(value);
+        }
+    }
 
     return <div className="key" onClick={()=> {handleKeyClicked(name)}}>{name}</div>
 };
