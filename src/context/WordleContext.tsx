@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import { numberOfRow, numberOfSquare } from "../constants/constant";
 
 type IWordleContext = {
@@ -11,15 +11,37 @@ type IWordleContext = {
     handleEnter: () => void;
 }
 
+type IWord = {
+    word: string;
+}
+
 const WordleContext = React.createContext<IWordleContext>((null as unknown) as IWordleContext);
 
 type WordleProviderProps = {
     children: React.ReactNode
 }
 const WordleProvider: FC<WordleProviderProps> = ({ children }): JSX.Element =>{
+    const [wordList, setWordList] = useState<IWord[]>([]);
+    const [todayWord, setTodayWord] = useState('');
     const [board, setBoard] = useState(Array.from({length: numberOfRow},()=> Array.from({length: numberOfSquare}, () => '')));
     const [currentRow, setCurrentRow] = useState(0);
     const [currentCell, setCurrentCell] = useState(0);
+    const [todayWordNum, setTodayWordNum] = useState(0);
+    const getWordList = async () => {
+        fetch("https://raw.githubusercontent.com/mongodb-developer/bash-wordle/main/words.json")
+            .then(res => {return res.json()})
+            .then(data => {
+                setWordList(data);
+            });
+    }
+        
+    useEffect((): void => {
+        getWordList();
+        if(wordList.length !==0){
+            //setTodayWordNum(Math.floor(Math.random() * wordList.length));
+            setTodayWord(wordList[todayWordNum].word);
+        }
+    },[todayWordNum, wordList]);
 
     const updateRow = (row: number)=>{
         setCurrentRow(row);
@@ -40,10 +62,16 @@ const WordleProvider: FC<WordleProviderProps> = ({ children }): JSX.Element =>{
     }
 
     const handleEnter = ()=>{
+        const value = board[currentRow].join('');
+        analyze(value);
         if(currentRow<numberOfRow-1){
             setCurrentRow(currentRow+1);
             setCurrentCell(0);
         }
+    }
+
+    const analyze = (word: string) =>{
+       console.log(wordList[todayWordNum].word);
     }
 
     const updateBoard = (row: number, cell: number, value: string)=>{
